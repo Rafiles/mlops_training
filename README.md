@@ -94,3 +94,5 @@ deepchecks
 ## 🧠 Autor
 
 Creado por Rafael Becerra como espacio personal de entrenamiento para el curso de MLOps.
+
+✍️ Este proyecto es parte de mis prácticas de Git y MLOps.
