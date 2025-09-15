@@ -96,3 +96,7 @@ deepchecks
 Creado por Rafael Becerra como espacio personal de entrenamiento para el curso de MLOps.
 
 ✍️ Este proyecto es parte de mis prácticas de Git y MLOps.
+
+Este sera un nuevo cambio de estrategia.
+
+Y este tambien sera uno mas.
