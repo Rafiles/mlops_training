@@ -1,102 +1,127 @@
-# 🧪 MLOps Training Repository
+# 🧪 Proyecto de Entrenamiento MLOps
 
-Este repositorio está diseñado como espacio de prácticas para reforzar los conceptos del curso de MLOps del programa de Maestría en Inteligencia Artificial Aplicada. Aquí se realizarán pruebas con herramientas, scripts y flujos de trabajo sin afectar el repositorio oficial del curso.
+Este repositorio contiene un flujo de trabajo básico para un proyecto de machine learning con buenas prácticas de MLOps, incluyendo:
+
+- ✅ Estructura modular del proyecto
+- ✅ Preprocesamiento de datos
+- ✅ Entrenamiento de modelo
+- ✅ Evaluación de rendimiento
+- ✅ Generación de reportes con Evidently
+- ✅ Pipeline reproducible con [DVC](https://dvc.org/)
+- ✅ Uso de entornos virtuales por compatibilidad de librerías
 
 ---
 
-## 📂 Estructura del proyecto
+## 📁 Estructura del proyecto
 
 ```
 mlops_training/
-├── data/                 # Archivos CSV o datasets de ejemplo
-├── notebooks/            # Jupyter Notebooks para exploración de datos
-├── scripts/              # Scripts en Python (.py)
-├── tests/                # Archivos de prueba con pytest
-├── requirements.txt      # Lista de dependencias
-├── .gitignore            # Exclusión de archivos innecesarios
-└── README.md             # Este archivo
+├── data/
+│   ├── raw/                   # Dataset original
+│   └── processed/             # Dataset limpio
+├── models/                    # Modelos entrenados (.pkl)
+├── reports/                   # Reportes (e.g., Evidently)
+├── src/
+│   ├── data/                  # Preprocesamiento
+│   └── models/                # Entrenamiento, evaluación y reportes
+├── dvc.yaml                   # Definición del pipeline
+├── dvc.lock                   # Versión exacta de etapas y datos
+├── requirements_mlops.txt     # Dependencias para entorno principal
+├── requirements_evidently_legacy.txt  # Dependencias específicas para Evidently
+├── main.py                    # Ejecuta el flujo principal (excepto Evidently)
+├── run_evidently.py           # Ejecuta Evidently desde entorno legacy
+└── README.md
 ```
 
 ---
 
-## 🧪 Ejercicios prácticos incluidos
+## ⚙️ Flujo de trabajo
 
-| Semana | Tema | Archivo(s) relacionados |
-|--------|------|--------------------------|
-| 1      | Verificación del entorno | `scripts/main.py` |
-| 1      | Primer gráfico con Matplotlib | `scripts/main.py` |
-| 1      | Exploración básica de datos | `scripts/explora_datos.py`, `data/ejemplo.csv` |
-| 1      | Uso básico de MLflow | `scripts/mlflow_test.py` |
-| 1      | Pruebas unitarias con Pytest | `scripts/calculadora.py`, `tests/test_calculadora.py` |
-| 1      | Git básico y conexión con GitHub | este README |
-| 2+     | Pruebas con DVC, FastAPI, Evidently, etc. | próximamente |
+### 🔁 Pipeline reproducible con DVC
 
----
-
-## 🔧 Requisitos del entorno
-
-- Python 3.13
-- Entorno virtual recomendado (`mlops_py313`)
-- Las siguientes librerías (instalables con `pip install -r requirements.txt`):
-
-```
-numpy
-pandas
-scipy
-matplotlib
-seaborn
-scikit-learn
-dvc
-cookiecutter-data-science
-pytest
-fastapi
-mlflow
-evidently
-sdv
-deepchecks
+```bash
+# Ejecuta el pipeline completo (preprocesamiento + entrenamiento)
+dvc repro
 ```
 
----
+Etapas definidas:
 
-## 🚀 Cómo empezar
-
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/tu_usuario/mlops_training.git
-   cd mlops_training
-   ```
-
-2. Activa tu entorno virtual:
-   ```bash
-   source ~/venvs/mlops_py313/bin/activate
-   ```
-
-3. Instala dependencias:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Ejecuta cualquier script de la carpeta `scripts/` para comenzar a practicar:
-   ```bash
-   python scripts/main.py
-   ```
+| Etapa       | Script                            | Entrada                           | Salida                          |
+|-------------|-----------------------------------|-----------------------------------|---------------------------------|
+| `preprocess`| `src/data/preprocess.py`          | `data/raw/vehicles.csv`           | `data/processed/vehicles_clean.csv` |
+| `train`     | `src/models/train_model.py`       | `data/processed/vehicles_clean.csv` | `models/model.pkl`               |
 
 ---
 
-## 📌 Notas adicionales
+### 🧪 Evaluación del modelo
 
-- Este repositorio es exclusivamente para pruebas, experimentos y aprendizaje personal.
-- No está conectado al flujo oficial del curso.
-- Puedes borrar o romper cosas sin miedo. ¡La práctica es parte del aprendizaje!
+```bash
+python src/models/evaluate_model.py
+```
+
+(Próximamente integrado como etapa en DVC)
 
 ---
 
-## 🧠 Autor
+### 📊 Reporte Evidently
 
-Creado por Rafael Becerra como espacio personal de entrenamiento para el curso de MLOps.
+Este paso requiere el entorno `evidently_legacy`, debido a problemas de compatibilidad de versiones.
 
-✍️ Este proyecto es parte de mis prácticas de Git y MLOps.
+```bash
+source ~/Documents/01\ -\ Projects/MNA/venvs/evidently_legacy/bin/activate
+python run_evidently.py
+```
 
-Este sera un nuevo cambio de estrategia.
+Resultado:
 
-Y este tambien sera uno mas.
+```
+✅ Reporte Evidently generado en: reports/evidently_report.html
+```
+
+---
+
+## 🧪 Entornos virtuales
+
+Usamos entornos separados por compatibilidad:
+
+| Entorno                | Versión de Python | Función principal              |
+|------------------------|-------------------|-------------------------------|
+| `mlops_py313` o `.venv`| 3.13.x            | Preprocesamiento, DVC, ML     |
+| `evidently_legacy`     | 3.11.x            | Evidently v0.4.x compatible   |
+
+---
+
+## ✅ Requisitos
+
+Instala las dependencias con:
+
+```bash
+# Para el entorno principal:
+pip install -r requirements_mlops.txt
+
+# Para Evidently (desde evidentemente_legacy):
+pip install -r requirements_evidently_legacy.txt
+```
+
+---
+
+## 🚀 Próximos pasos
+
+- [ ] Agregar etapa `evaluate` como parte de DVC
+- [ ] Integrar MLflow para seguimiento de experimentos
+- [ ] Desplegar API con FastAPI
+- [ ] Automatizar pruebas con Pytest
+- [ ] Configurar CI/CD (GitHub Actions)
+
+---
+
+## 📌 Autor
+
+Rafael Becerra  
+Proyecto del curso de MLOps – MNA  
+[Repositorio en GitHub](https://github.com/Rafiles/mlops_training)
+
+---
+
+> _“Un experimento sin versionado es solo una ocurrencia.”_  
+> — *MLOps team*
