@@ -1,0 +1,15 @@
+stages:
+  preprocess:
+    cmd: python src/data/preprocess.py
+    deps:
+    - data/raw/vehicles.csv
+    - src/data/preprocess.py
+    outs:
+    - data/processed/vehicles_clean.csv
+  train:
+    cmd: python src/models/train_model.py
+    deps:
+    - data/processed/vehicles_clean.csv
+    - src/models/train_model.py
+    outs:
+    - models/model.pkl
